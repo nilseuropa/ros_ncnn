@@ -40,9 +40,13 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 
+set(ROS_NNCN_SRC
+	src/ncnn_yolact.cpp
+)
+
 # REQUIRES ncnn to be built with vulkan
-add_executable(yolact_gpu_node src/yolact_gpu_node.cpp)
+add_executable(yolact_gpu_node src/yolact_gpu_node.cpp ${ROS_NNCN_SRC})
 target_link_libraries(yolact_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
-add_executable(yolact_cpu_node src/yolact_cpu_node.cpp)
+add_executable(yolact_cpu_node src/yolact_cpu_node.cpp ${ROS_NNCN_SRC})
 target_link_libraries(yolact_cpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})

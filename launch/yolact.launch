@@ -1,0 +1,19 @@
+<launch>
+
+  <arg name="gpu_enabled" default="true"/>
+  <arg name="display_output" default="true"/>
+  <arg name="camera_topic" default="/camera/image_raw"/>
+
+  <node name="yolact_gpu_node" pkg="ros_ncnn" type="yolact_gpu_node" if="$(arg gpu_enabled)">
+    <param name="display_output" value="$(arg display_output)"/>
+    <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
+  </node>
+
+  <node name="yolact_cpu_node" pkg="ros_ncnn" type="yolact_cpu_node" unless="$(arg gpu_enabled)">
+    <param name="display_output" value="$(arg display_output)"/>
+    <!-- by default it takes all CPU threads available -->
+    <!-- <param name="num_threads" value="8"/> -->
+    <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
+  </node>
+
+</launch>
