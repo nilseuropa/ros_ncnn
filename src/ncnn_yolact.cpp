@@ -1,4 +1,4 @@
-#include "ros_ncnn/nncn_yolact.h"
+#include "ros_ncnn/ncnn_yolact.h"
 
 static inline float intersection_area(const Object& a, const Object& b)
 {
@@ -311,19 +311,6 @@ int ncnnYolact::detect_yolact(const cv::Mat& bgr, std::vector<Object>& objects, 
     }
 
     return 0;
-}
-
-
-void ncnnYolact::print_objects(const std::vector<Object>& objects){
-    for (size_t i = 0; i < objects.size(); i++)
-    {
-        const Object& obj = objects[i];
-
-        if (obj.prob < 0.15)
-            continue;
-            // ROS_INFO("%d = %.5f at %.2f %.2f %.2f x %.2f", obj.label, obj.prob,
-            //         obj.rect.x, obj.rect.y, obj.rect.width, obj.rect.height);
-    }
 }
 
 void ncnnYolact::draw_objects(const cv::Mat& bgr, const std::vector<Object>& objects, double dT)

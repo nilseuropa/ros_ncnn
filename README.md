@@ -1,6 +1,6 @@
 # ROS_NCNN #
 
-This is a ROS wrapper package for NCNN, a high-performance neural network inference framework *- by Tencent -* optimized for mobile platforms:
+This is a ROS package for NCNN, a high-performance neural network inference framework *- by Tencent -* optimized for mobile platforms:
 
 - ARM NEON assembly level optimization
 - Sophisticated memory management and data structure design, very low memory footprint
@@ -12,13 +12,7 @@ This is a ROS wrapper package for NCNN, a high-performance neural network infere
 
 
 
-*Yolact on ROS_NCNN:*
-
-![](doc/ros_ncnn.png)
-
-
-
-## Setting up ## 
+## Setting up ##
 
 ### Library ###
 
@@ -33,10 +27,51 @@ This is a ROS wrapper package for NCNN, a high-performance neural network infere
 - [Build for iOS on Linux with cctools-port](https://github.com/Tencent/ncnn/wiki/how-to-build#build-for-ios-on-linux-with-cctools-port)
 - [Build for Hisilicon platform with cross-compiling](https://github.com/Tencent/ncnn/wiki/how-to-build#build-for-hisilicon-platform-with-cross-compiling)
 
-### ROS package ###
+
+
+## ROS package ##
 
 * Clone this repository into your catkin workspace.
 * Initialize and update submodule `ncnn-assets` *( this is a collection of some popular models )*
+* Compile the workspace.
 
-## :construction: ##
 
+
+### Yolact on ROS_NCNN ###
+
+```xml
+<launch>
+
+  <arg name="gpu_enabled" default="true"/>
+  <arg name="display_output" default="true"/>
+  <arg name="camera_topic" default="/camera/image_raw"/>
+
+  <node name="yolact_gpu_node" pkg="ros_ncnn" type="yolact_gpu_node" output="screen" if="$(arg gpu_enabled)">
+    <param name="display_output" value="$(arg display_output)"/>
+    <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
+  </node>
+
+  <node name="yolact_cpu_node" pkg="ros_ncnn" type="yolact_cpu_node" output="screen" unless="$(arg gpu_enabled)">
+    <param name="display_output" value="$(arg display_output)"/>
+    <!-- by default it takes all CPU threads available -->
+    <!-- <param name="num_threads" value="8"/> -->
+    <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
+  </node>
+
+</launch>
+```
+
+![](doc/yolact.png)
+
+### Retinaface on ROS_NCNN ###
+
+![](doc/retinaface.png)
+
+
+
+## :construction:  ## 
+
+* Templates for common object ordering routines
+* General model loader node
+* Message generation ( eg. faceObject etc... )
+* Dynamic reconfiguration 
