@@ -49,6 +49,9 @@ if (${VULKAN_FOUND})
   # RETINAFACE
   add_executable(retinaface_gpu_node src/retinaface_gpu_node.cpp src/ncnn_retinaface.cpp)
   target_link_libraries(retinaface_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+  # FASTER RCNN
+  add_executable(rcnn_gpu_node src/rcnn_gpu_node.cpp src/ncnn_fast_rcnn.cpp)
+  target_link_libraries(rcnn_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 endif()
 
 # YOLACT

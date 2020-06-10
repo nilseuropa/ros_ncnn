@@ -1,6 +1,7 @@
 #ifndef _ROS_NCNN_UTILS_HEADER_
 #define _ROS_NCNN_UTILS_HEADER_
 
+#include <math.h>
 #include <stdio.h>
 #include <vector>
 #include <opencv2/core/core.hpp>
