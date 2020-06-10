@@ -69,9 +69,8 @@ This is a ROS package for NCNN, a high-performance neural network inference fram
 
 
 
-## :construction:  ## 
+## :construction:  ##
 
-* Templates for common object ordering routines
 * General model loader node
 * Message generation ( eg. faceObject etc... )
-* Dynamic reconfiguration 
+* Dynamic reconfiguration
