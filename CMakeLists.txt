@@ -33,7 +33,7 @@ find_package(ncnn REQUIRED)
 if (${ncnn_FOUND})
   message("-- NCNN found.")
   message("-- NCNN_VULKAN flag is ${NCNN_VULKAN}")
-  if (${NCNN_VULKAN}) 
+  if (${NCNN_VULKAN})
     message("-- AUTO-ENABLING GPU_SUPPORT")
     set(GPU_SUPPORT ON)
   endif()
@@ -47,7 +47,7 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 
-if (GPU_SUPPORT) 
+if (GPU_SUPPORT)
   message("-- GPU support is ENABLED")
   find_package(Vulkan) # REQUIRES ncnn to be built with vulkan
   if (${VULKAN_FOUND})
@@ -72,8 +72,6 @@ target_link_libraries(retinaface_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 add_executable(yolact_node src/yolact_node.cpp src/ncnn_yolact.cpp)
 target_link_libraries(yolact_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
-if (GPU_SUPPORT)
-  # FASTER RCNN
-  add_executable(rcnn_gpu_node src/rcnn_gpu_node.cpp src/ncnn_fast_rcnn.cpp)
-  target_link_libraries(rcnn_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
-endif()
+# FASTER RCNN
+add_executable(faster_rcnn_node src/faster_rcnn_node.cpp src/ncnn_fast_rcnn.cpp)
+target_link_libraries(faster_rcnn_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
