@@ -36,7 +36,7 @@ This is a ROS package for NCNN, a high-performance neural network inference fram
 * Compile the workspace.
 * CMake script is going to autodetect whether the **ncnn library** is built with **Vulkan** or not. _( All nodes will utilize the GPU if Vulkan is enabled. )_
 
-
+#### General launch parameters ####
 ```xml
 <node name="yolact_node" pkg="ros_ncnn" type="yolact_node" output="screen">
   <param name="display_output" value="$(arg display_output)"/>
@@ -48,21 +48,31 @@ This is a ROS package for NCNN, a high-performance neural network inference fram
 </node>
 ```
 
-### Yolact on ROS_NCNN ###
+### YOLACT ###
 ![](doc/yolact.png)
 
-### RetinaFace on ROS_NCNN ###
+### YOLO
+```xml
+<node name="yolo_node" pkg="ros_ncnn" type="yolo_node" output="screen">
+  <param name="model_file" value="mobilenet_yolo.bin"/> <!-- mobilenetv2_yolov3.bin -->
+  <param name="param_file" value="mobilenet_yolo.param"/> <!-- mobilenetv2_yolov3.param -->
+</node>
+```
+The `assets` repository has multiple YOLO implementations, choose the parameter and mode file from at launch. _( Default is YOLO-3 on MobileNet-2 )_
+![](doc/yolo.png)
+
+### RetinaFace ###
 ![](doc/retinaface.png)
 
 ### PoseNet ###
 ![](doc/posenet.png)
 
-### Faster RCNN ###
-Don't forget to uncompress `ZF_faster_rcnn_final.bin.zip` in assets directory first.
+### Faster R-CNN ###
+Don't forget to uncompress `ZF_faster_rcnn_final.bin.zip` in assets directory first. _( but again, R-CNN is the past and that's neither a cat nor a bird right there... that's my best friend )_
 ![](doc/rcnn.png)
 
-## :construction:  ##
+## :construction:  To do . . . ##
 
-* General model loader node
-* Message generation ( eg. faceObject etc... )
-* Dynamic reconfiguration
+* General model loader node _( with layer to topic mapping through NDS file )_
+* Message generation _( e.g. faceObject_msgs )_
+* Dynamic reconfiguration for some params _( e.g. probability thresholds )_

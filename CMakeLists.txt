@@ -72,6 +72,10 @@ target_link_libraries(retinaface_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 add_executable(yolact_node src/yolact_node.cpp src/ncnn_yolact.cpp)
 target_link_libraries(yolact_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
+# YOLO
+add_executable(yolo_node src/yolo_node.cpp src/ncnn_yolo.cpp)
+target_link_libraries(yolo_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+
 # POSENET
 add_executable(posenet_node src/posenet_node.cpp src/ncnn_posenet.cpp)
 target_link_libraries(posenet_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
