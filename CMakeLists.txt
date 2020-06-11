@@ -3,10 +3,7 @@ project(ros_ncnn)
 
 add_compile_options(-std=c++11 -DUSE_AVX_INSTRUCTIONS=ON)
 
-option(GPU_SUPPORT "Enable GPU support (Vulkan)" ON)
-configure_file("include/ros_ncnn/ncnn_config.h.in" "ros_ncnn/ncnn_config.h")
-message(${CMAKE_CURRENT_BINARY_DIR})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+option(GPU_SUPPORT "Enable GPU support (Vulkan)" OFF)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -35,8 +32,16 @@ include_directories(
 find_package(ncnn REQUIRED)
 if (${ncnn_FOUND})
   message("-- NCNN found.")
+  message("-- NCNN_VULKAN flag is ${NCNN_VULKAN}")
+  if (${NCNN_VULKAN}) 
+    message("-- AUTO-ENABLING GPU_SUPPORT")
+    set(GPU_SUPPORT ON)
+  endif()
   include_directories(${ncnn_INCLUDE})
 endif()
+
+configure_file("include/ros_ncnn/ncnn_config.h.in" "ros_ncnn/ncnn_config.h")
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 find_package(OpenCV REQUIRED COMPONENTS
   core highgui imgproc imgcodecs
