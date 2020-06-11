@@ -54,6 +54,9 @@ This is a ROS package for NCNN, a high-performance neural network inference fram
 ### RetinaFace on ROS_NCNN ###
 ![](doc/retinaface.png)
 
+### PoseNet ###
+![](doc/posenet.png)
+
 ### Faster RCNN ###
 Don't forget to uncompress `ZF_faster_rcnn_final.bin.zip` in assets directory first.
 ![](doc/rcnn.png)
