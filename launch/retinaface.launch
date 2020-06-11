@@ -1,19 +1,12 @@
 <launch>
 
-  <arg name="gpu_enabled" default="true"/>
   <arg name="display_output" default="true"/>
-  <arg name="camera_topic" default="/camera/image_raw"/>
+  <arg name="camera_topic" default="/usb_cam/image_raw"/>
 
-  <node name="retinaface_gpu_node" pkg="ros_ncnn" type="retinaface_gpu_node" output="screen" if="$(arg gpu_enabled)">
+  <node name="retinaface_node" pkg="ros_ncnn" type="retinaface_node" output="screen">
     <param name="display_output" value="$(arg display_output)"/>
     <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
-  </node>
-
-  <node name="retinaface_cpu_node" pkg="ros_ncnn" type="retinaface_cpu_node" output="screen" unless="$(arg gpu_enabled)">
-    <param name="display_output" value="$(arg display_output)"/>
-    <!-- by default it takes all CPU threads available -->
-    <!-- <param name="num_threads" value="8"/> -->
-    <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
+    <param name="gpu_device" value="1"/>
   </node>
 
 </launch>
