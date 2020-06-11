@@ -2,11 +2,12 @@
 
   <arg name="gpu_enabled" default="true"/>
   <arg name="display_output" default="true"/>
-  <arg name="camera_topic" default="/camera/image_raw"/>
+  <arg name="camera_topic" default="/usb_cam/image_raw"/>
 
   <node name="yolact_gpu_node" pkg="ros_ncnn" type="yolact_gpu_node" output="screen" if="$(arg gpu_enabled)">
     <param name="display_output" value="$(arg display_output)"/>
     <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
+    <param name="gpu_device" value="1"/>
   </node>
 
   <node name="yolact_cpu_node" pkg="ros_ncnn" type="yolact_cpu_node" output="screen" unless="$(arg gpu_enabled)">

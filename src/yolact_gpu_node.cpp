@@ -5,7 +5,10 @@
 #include <sensor_msgs/image_encodings.h>
 #include <cv_bridge/cv_bridge.h>
 
-#include "gpu.h"
+#include "ros_ncnn/ncnn_config.h"
+#ifdef GPU_SUPPORT
+  #include "gpu.h"
+#endif
 #include "ros_ncnn/ncnn_yolact.h"
 
 class GlobalGpuInstance
@@ -67,6 +70,7 @@ int main(int argc, char** argv)
 
   int gpu_device;
   nhLocal.param("gpu_device", gpu_device, 0);
+  ROS_INFO("GPU_DEVICE %d", gpu_device);
   g_vkdev = ncnn::get_gpu_device(gpu_device);
   g_blob_vkallocator = new ncnn::VkBlobAllocator(g_vkdev);
   g_staging_vkallocator = new ncnn::VkStagingAllocator(g_vkdev);

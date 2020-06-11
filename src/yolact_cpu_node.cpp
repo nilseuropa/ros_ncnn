@@ -5,6 +5,7 @@
 #include <sensor_msgs/image_encodings.h>
 #include <cv_bridge/cv_bridge.h>
 
+#include "ros_ncnn/ncnn_config.h"
 #include "ros_ncnn/ncnn_yolact.h"
 
 ncnnYolact yolact;

@@ -3,6 +3,11 @@ project(ros_ncnn)
 
 add_compile_options(-std=c++11 -DUSE_AVX_INSTRUCTIONS=ON)
 
+option(GPU_SUPPORT "Enable GPU support (Vulkan)" ON)
+configure_file("include/ros_ncnn/ncnn_config.h.in" "ros_ncnn/ncnn_config.h")
+message(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   roslib
@@ -29,34 +34,40 @@ include_directories(
 
 find_package(ncnn REQUIRED)
 if (${ncnn_FOUND})
-	message("-- NCNN found.")
+  message("-- NCNN found.")
   include_directories(${ncnn_INCLUDE})
 endif()
 
-find_package(OpenCV QUIET COMPONENTS
+find_package(OpenCV REQUIRED COMPONENTS
   core highgui imgproc imgcodecs
 )
 include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 
-find_package(Vulkan) # REQUIRES ncnn to be built with vulkan
-if (${VULKAN_FOUND})
-  message("-- Vulkan found.")
+if (GPU_SUPPORT) 
+  message("-- GPU support is ENABLED")
+  find_package(Vulkan) # REQUIRES ncnn to be built with vulkan
+  if (${VULKAN_FOUND})
+    message("-- Vulkan found.")
+    # YOLACT
+    add_executable(yolact_gpu_node src/yolact_gpu_node.cpp src/ncnn_yolact.cpp)
+    target_link_libraries(yolact_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+    # RETINAFACE
+    add_executable(retinaface_gpu_node src/retinaface_gpu_node.cpp src/ncnn_retinaface.cpp)
+    target_link_libraries(retinaface_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+    # FASTER RCNN
+    add_executable(rcnn_gpu_node src/rcnn_gpu_node.cpp src/ncnn_fast_rcnn.cpp)
+    target_link_libraries(rcnn_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+  else()
+    message("-- ERROR: GPU support was enabled, but Vulkan is not found")
+  endif()
+else()
+  message("-- GPU support is DISABLED")
   # YOLACT
-  add_executable(yolact_gpu_node src/yolact_gpu_node.cpp src/ncnn_yolact.cpp)
-  target_link_libraries(yolact_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+  add_executable(yolact_cpu_node src/yolact_cpu_node.cpp src/ncnn_yolact.cpp)
+  target_link_libraries(yolact_cpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
   # RETINAFACE
-  add_executable(retinaface_gpu_node src/retinaface_gpu_node.cpp src/ncnn_retinaface.cpp)
-  target_link_libraries(retinaface_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
-  # FASTER RCNN
-  add_executable(rcnn_gpu_node src/rcnn_gpu_node.cpp src/ncnn_fast_rcnn.cpp)
-  target_link_libraries(rcnn_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+  add_executable(retinaface_cpu_node src/retinaface_cpu_node.cpp src/ncnn_retinaface.cpp)
+  target_link_libraries(retinaface_cpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 endif()
-
-# YOLACT
-add_executable(yolact_cpu_node src/yolact_cpu_node.cpp src/ncnn_yolact.cpp)
-target_link_libraries(yolact_cpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
-# RETINAFACE
-add_executable(retinaface_cpu_node src/retinaface_cpu_node.cpp src/ncnn_retinaface.cpp)
-target_link_libraries(retinaface_cpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})

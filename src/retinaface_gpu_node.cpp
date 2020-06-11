@@ -9,7 +9,10 @@
 #include <sensor_msgs/image_encodings.h>
 #include <cv_bridge/cv_bridge.h>
 
-#include "gpu.h"
+#include "ros_ncnn/ncnn_config.h"
+#ifdef GPU_SUPPORT
+  #include "gpu.h"
+#endif
 #include "ros_ncnn/ncnn_retinaface.h"
 
 class GlobalGpuInstance
