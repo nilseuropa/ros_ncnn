@@ -7,6 +7,8 @@
     <param name="display_output" value="$(arg display_output)"/>
     <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
     <param name="gpu_device" value="0"/>
+    <!-- <param name="gpu_device" value="0"/> -->
+    <!-- <param name="num_threads" value="0"/> -->
   </node>
 
 </launch>
