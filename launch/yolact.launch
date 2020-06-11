@@ -6,7 +6,7 @@
   <node name="yolact_node" pkg="ros_ncnn" type="yolact_node" output="screen">
     <param name="display_output" value="$(arg display_output)"/>
     <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
-    <param name="gpu_device" value="1"/>
+    <param name="gpu_device" value="0"/>
   </node>
 
 </launch>
