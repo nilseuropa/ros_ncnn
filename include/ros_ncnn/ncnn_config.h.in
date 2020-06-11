@@ -1,0 +1,6 @@
+#ifndef NCNN_CONFIG
+#define NCNN_CONFIG
+
+#cmakedefine GPU_SUPPORT
+
+#endif
