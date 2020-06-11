@@ -26,10 +26,10 @@ class ncnnFastRcnn
 
 public:
 
-  ncnn::Net net;
+  ncnn::Net neuralnet;
 
-  int detect_faster_rcnn(const cv::Mat& bgr, std::vector<Object>& objects, uint8_t n_threads);
-  void draw_objects(const cv::Mat& bgr, const std::vector<Object>& objects, double dT);
+  int detect(const cv::Mat& bgr, std::vector<Object>& objects, uint8_t n_threads);
+  void draw(const cv::Mat& bgr, const std::vector<Object>& objects, double dT);
 };
 
 #endif

@@ -123,7 +123,7 @@ static void generate_proposals(const ncnn::Mat& anchors, int feat_stride, const 
 
 /////////////////
 
-int ncnnRetinaface::detect_retinaface(const cv::Mat& bgr, std::vector<FaceObject>& faceobjects, uint8_t n_threads)
+int ncnnRetinaface::detect(const cv::Mat& bgr, std::vector<FaceObject>& faceobjects, uint8_t n_threads)
 {
 
     const float prob_threshold = 0.8f; // TODO: param / dynamic reconf.
@@ -134,7 +134,7 @@ int ncnnRetinaface::detect_retinaface(const cv::Mat& bgr, std::vector<FaceObject
 
     ncnn::Mat in = ncnn::Mat::from_pixels(bgr.data, ncnn::Mat::PIXEL_BGR2RGB, img_w, img_h);
 
-    ncnn::Extractor ex = net.create_extractor();
+    ncnn::Extractor ex = neuralnet.create_extractor();
     ex.set_num_threads(n_threads);
     ex.input("data", in);
 
@@ -240,7 +240,7 @@ int ncnnRetinaface::detect_retinaface(const cv::Mat& bgr, std::vector<FaceObject
     return 0;
 }
 
-void ncnnRetinaface::draw_faceobjects(const cv::Mat& bgr, const std::vector<FaceObject>& faceobjects, double dT)
+void ncnnRetinaface::draw(const cv::Mat& bgr, const std::vector<FaceObject>& faceobjects, double dT)
 {
     cv::Mat image = bgr.clone();
 

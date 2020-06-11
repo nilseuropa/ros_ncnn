@@ -18,10 +18,10 @@ class ncnnRetinaface {
 
 public:
 
-  ncnn::Net net;
+  ncnn::Net neuralnet;
 
-  int detect_retinaface(const cv::Mat& bgr, std::vector<FaceObject>& faceobjects, uint8_t n_threads);
-  void draw_faceobjects(const cv::Mat& bgr, const std::vector<FaceObject>& faceobjects, double dT);
+  int detect(const cv::Mat& bgr, std::vector<FaceObject>& faceobjects, uint8_t n_threads);
+  void draw(const cv::Mat& bgr, const std::vector<FaceObject>& faceobjects, double dT);
 
 };
 

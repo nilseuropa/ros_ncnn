@@ -1,7 +1,7 @@
 <launch>
 
   <arg name="display_output" default="true"/>
-  <arg name="camera_topic" default="/usb_cam/image_raw"/>
+  <arg name="camera_topic" default="/camera/image_raw"/>
 
   <node name="retinaface_node" pkg="ros_ncnn" type="retinaface_node" output="screen">
     <param name="display_output" value="$(arg display_output)"/>

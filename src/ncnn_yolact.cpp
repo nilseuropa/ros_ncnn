@@ -1,7 +1,7 @@
 #include "ros_ncnn/ncnn_utils.h"
 #include "ros_ncnn/ncnn_yolact.h"
 
-int ncnnYolact::detect_yolact(const cv::Mat& bgr, std::vector<Object>& objects, uint8_t n_threads)
+int ncnnYolact::detect(const cv::Mat& bgr, std::vector<Object>& objects, uint8_t n_threads)
 {
 
     const int target_size = 550;
@@ -15,7 +15,7 @@ int ncnnYolact::detect_yolact(const cv::Mat& bgr, std::vector<Object>& objects, 
     const float norm_vals[3] = {1.0/58.40f, 1.0/57.12f, 1.0/57.38f};
     in.substract_mean_normalize(mean_vals, norm_vals);
 
-    ncnn::Extractor ex = net.create_extractor();
+    ncnn::Extractor ex = neuralnet.create_extractor();
     ex.set_num_threads(n_threads);
 
     ex.input("input.1", in);
@@ -229,7 +229,7 @@ int ncnnYolact::detect_yolact(const cv::Mat& bgr, std::vector<Object>& objects, 
     return 0;
 }
 
-void ncnnYolact::draw_objects(const cv::Mat& bgr, const std::vector<Object>& objects, double dT)
+void ncnnYolact::draw(const cv::Mat& bgr, const std::vector<Object>& objects, double dT)
 {
 
     static const unsigned char colors[19][3] = {

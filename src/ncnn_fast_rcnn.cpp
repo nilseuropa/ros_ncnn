@@ -1,7 +1,7 @@
 #include "ros_ncnn/ncnn_utils.h"
 #include "ros_ncnn/ncnn_fast_rcnn.h"
 
-int ncnnFastRcnn::detect_faster_rcnn(const cv::Mat& bgr, std::vector<Object>& objects, uint8_t n_threads)
+int ncnnFastRcnn::detect(const cv::Mat& bgr, std::vector<Object>& objects, uint8_t n_threads)
 {
 
     const int target_size = 600;// __C.TEST.SCALES
@@ -39,7 +39,7 @@ int ncnnFastRcnn::detect_faster_rcnn(const cv::Mat& bgr, std::vector<Object>& ob
     im_info[2] = scale;
 
     // step1, extract feature and all rois
-    ncnn::Extractor ex1 = net.create_extractor();
+    ncnn::Extractor ex1 = neuralnet.create_extractor();
     ex1.set_num_threads(n_threads);
 
     ex1.input("data", in);
@@ -54,7 +54,7 @@ int ncnnFastRcnn::detect_faster_rcnn(const cv::Mat& bgr, std::vector<Object>& ob
     std::vector< std::vector<Object> > class_candidates;
     for (int i = 0; i < rois.c; i++)
     {
-        ncnn::Extractor ex2 = net.create_extractor();
+        ncnn::Extractor ex2 = neuralnet.create_extractor();
 
         ncnn::Mat roi = rois.channel(i);// get single roi
         ex2.input("conv5_relu5", conv5_relu5);
@@ -159,7 +159,7 @@ int ncnnFastRcnn::detect_faster_rcnn(const cv::Mat& bgr, std::vector<Object>& ob
     return 0;
 }
 
-void ncnnFastRcnn::draw_objects(const cv::Mat& bgr, const std::vector<Object>& objects, double dT)
+void ncnnFastRcnn::draw(const cv::Mat& bgr, const std::vector<Object>& objects, double dT)
 {
     cv::Mat image = bgr.clone();
 
@@ -194,6 +194,6 @@ void ncnnFastRcnn::draw_objects(const cv::Mat& bgr, const std::vector<Object>& o
     }
 
     cv::putText(image, std::to_string(1/dT)+" Hz", cv::Point(20, 20), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255));
-    cv::imshow("FAST_RCNN", image);
+    cv::imshow("Faster R-CNN", image);
     cv::waitKey(1);
 }
