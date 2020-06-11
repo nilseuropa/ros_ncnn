@@ -50,9 +50,6 @@ if (GPU_SUPPORT)
   find_package(Vulkan) # REQUIRES ncnn to be built with vulkan
   if (${VULKAN_FOUND})
     message("-- Vulkan found.")
-    # YOLACT
-    add_executable(yolact_gpu_node src/yolact_gpu_node.cpp src/ncnn_yolact.cpp)
-    target_link_libraries(yolact_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
     # RETINAFACE
     add_executable(retinaface_gpu_node src/retinaface_gpu_node.cpp src/ncnn_retinaface.cpp)
     target_link_libraries(retinaface_gpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
@@ -64,10 +61,11 @@ if (GPU_SUPPORT)
   endif()
 else()
   message("-- GPU support is DISABLED")
-  # YOLACT
-  add_executable(yolact_cpu_node src/yolact_cpu_node.cpp src/ncnn_yolact.cpp)
-  target_link_libraries(yolact_cpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
   # RETINAFACE
   add_executable(retinaface_cpu_node src/retinaface_cpu_node.cpp src/ncnn_retinaface.cpp)
   target_link_libraries(retinaface_cpu_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 endif()
+
+# YOLACT (common source for both cpu-gpu nodes)
+add_executable(yolact_node src/yolact_node.cpp src/ncnn_yolact.cpp)
+target_link_libraries(yolact_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})

@@ -34,6 +34,7 @@ This is a ROS package for NCNN, a high-performance neural network inference fram
 * Clone this repository into your catkin workspace.
 * Initialize and update submodule `ncnn-assets` *( this is a collection of some popular models )*
 * Compile the workspace.
+* Use `GPU_SUPPORT=<ON/OFF>` cmake option to toggle GPU support. (For example to re-configure your catkin workspace with GPU support disabled: `catkin_make clean -DGPU_SUPPORT=OFF`)
 
 
 

@@ -11,18 +11,20 @@
 #endif
 #include "ros_ncnn/ncnn_yolact.h"
 
-class GlobalGpuInstance
-{
-public:
+#ifdef GPU_SUPPORT
+  class GlobalGpuInstance
+  {
+  public:
     GlobalGpuInstance() { ncnn::create_gpu_instance(); }
     ~GlobalGpuInstance() { ncnn::destroy_gpu_instance(); }
-};
-// Initialize Vulkan runtime before main() // !!!
-GlobalGpuInstance g_global_gpu_instance;
+  };
+  // Initialize Vulkan runtime before main() // !!!
+  GlobalGpuInstance g_global_gpu_instance;
 
-static ncnn::VulkanDevice* g_vkdev = 0;
-static ncnn::VkAllocator* g_blob_vkallocator = 0;
-static ncnn::VkAllocator* g_staging_vkallocator = 0;
+  static ncnn::VulkanDevice* g_vkdev = 0;
+  static ncnn::VkAllocator* g_blob_vkallocator = 0;
+  static ncnn::VkAllocator* g_staging_vkallocator = 0;
+#endif
 
 ncnnYolact yolact;
 bool display_output;
@@ -54,7 +56,6 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg, int n_threads)
       yolact.draw_objects(cv_ptr->image, objects, (current_time-last_time).toSec());
       last_time = current_time;
     }
-
   }
   catch (cv_bridge::Exception& e) {
     ROS_ERROR("CV bridge exception: %s", e.what());
@@ -70,12 +71,17 @@ int main(int argc, char** argv)
 
   int gpu_device;
   nhLocal.param("gpu_device", gpu_device, 0);
-  ROS_INFO("GPU_DEVICE %d", gpu_device);
+#ifndef GPU_SUPPORT
+  ROS_INFO("YOLACT node running on CPU");
+#endif
+#ifdef GPU_SUPPORT
+  ROS_INFO("YOLACT node with GPU_SUPPORT, selected gpu_device: %d", gpu_device);
   g_vkdev = ncnn::get_gpu_device(gpu_device);
   g_blob_vkallocator = new ncnn::VkBlobAllocator(g_vkdev);
   g_staging_vkallocator = new ncnn::VkStagingAllocator(g_vkdev);
   yolact.net.opt.use_vulkan_compute = true;
   yolact.net.set_vulkan_device(g_vkdev);
+#endif
 
   const std::string package_name = "ros_ncnn";
   std::string path = ros::package::getPath(package_name)+("/assets/models/");
@@ -91,11 +97,15 @@ int main(int argc, char** argv)
   image_transport::ImageTransport it(n);
   image_transport::Subscriber video = it.subscribe("/camera/image_raw", 1, boost::bind(&imageCallback, _1, num_threads));
 
+#ifdef GPU_SUPPORT
   ncnn::create_gpu_instance();
+#endif
   while (ros::ok()) {
     ros::spinOnce();
   }
+#ifdef GPU_SUPPORT
   ncnn::destroy_gpu_instance();
+#endif
 
   return 0;
 }
