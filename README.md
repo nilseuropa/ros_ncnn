@@ -45,11 +45,24 @@ This is a ROS package for NCNN, a high-performance neural network inference fram
   <param name="gpu_device" value="0"/>
   <!-- Number of CPU threads to use, uses all available if not provided. -->
   <param name="num_threads" value="8"/>
+  <!-- Turns engine.neuralnet.opt.use_vulkan_compute regardless the lib is built with GPU support -->
+  <param name="enable_gpu" value="true"/>
 </node>
 ```
 
 ### YOLACT ###
 ![](doc/yolact.png)
+
+**Publisher**
+```yaml
+# Object message
+Header header
+Rectangle boundingbox # Vector2D position and size
+string label
+float32 probability
+```
+**Params**
+* _probability_threshold_ - default 0.5 - above which objects are published
 
 ### YOLO
 ![](doc/yolo.png)
@@ -67,7 +80,6 @@ float32 probability
 * _model_file_ - YOLO network model file
 * _param_file_ - YOLO network parameter file
 * _probability_threshold_ - default 0.5 - above which objects are published
-* _enable_gpu_ - default true - `engine.neuralnet.opt.use_vulkan_compute`
 
 ### RetinaFace ###
 ![](doc/retinaface.png)
@@ -82,7 +94,6 @@ float32 probability
 ```
 **Params**
 * _probability_threshold_ - default 0.5 - above which face objects are published
-* _enable_gpu_ - default true - `engine.neuralnet.opt.use_vulkan_compute`
 
 
 ### PoseNet ###

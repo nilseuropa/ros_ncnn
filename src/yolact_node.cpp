@@ -13,38 +13,47 @@
 
 /////////////////////////////////
 #include "ros_ncnn/ncnn_yolact.h"
+#include "ros_ncnn/Object.h"
 ncnnYolact engine;
 /////////////////////////////////
 
+ros_ncnn::Object objMsg;
+ros::Publisher obj_pub;
 std::vector<Object> objects;
 cv_bridge::CvImagePtr cv_ptr;
 ros::Time last_time;
 bool display_output;
-
-void print_objects(const std::vector<Object>& objects){
-    for (size_t i = 0; i < objects.size(); i++)
-    {
-        const Object& obj = objects[i];
-        if (obj.prob > 0.15)
-        {
-          ROS_INFO("%d = %.5f at %.2f %.2f %.2f x %.2f", obj.label, obj.prob,
-                obj.rect.x, obj.rect.y, obj.rect.width, obj.rect.height);
-        }
-    }
-}
+double prob_threshold;
+bool enable_gpu;
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg, int n_threads)
 {
   try {
+    ros::Time current_time = ros::Time::now();
     cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
     engine.detect(cv_ptr->image, objects, n_threads);
-    print_objects(objects);
-
-    if (display_output) {
-      ros::Time current_time = ros::Time::now();
-      engine.draw(cv_ptr->image, objects, (current_time-last_time).toSec());
-      last_time = current_time;
+    for (size_t i = 0; i < objects.size(); i++)
+    {
+        const Object& obj = objects[i];
+        if (obj.prob > prob_threshold)
+        {
+          ROS_INFO("%d = %.5f at %.2f %.2f %.2f x %.2f", obj.label, obj.prob,
+          obj.rect.x, obj.rect.y, obj.rect.width, obj.rect.height);
+          objMsg.header.seq++;
+          objMsg.header.stamp = current_time;
+          objMsg.probability = obj.prob;
+          objMsg.label = class_names[obj.label];
+          objMsg.boundingbox.position.x = obj.rect.x;
+          objMsg.boundingbox.position.y = obj.rect.y;
+          objMsg.boundingbox.size.x = obj.rect.width;
+          objMsg.boundingbox.size.y = obj.rect.height;
+          obj_pub.publish(objMsg);
+        }
     }
+    if (display_output) {
+      engine.draw(cv_ptr->image, objects, (current_time-last_time).toSec());
+    }
+    last_time = current_time;
   }
   catch (cv_bridge::Exception& e) {
     ROS_ERROR("CV bridge exception: %s", e.what());
@@ -60,6 +69,7 @@ int main(int argc, char** argv)
   std::string node_name = ros::this_node::getName();
   int gpu_device;
   nhLocal.param("gpu_device", gpu_device, 0);
+  nhLocal.param("enable_gpu", enable_gpu, true);
 
 #ifndef GPU_SUPPORT
   ROS_WARN_STREAM(node_name << " running on CPU");
@@ -69,7 +79,7 @@ int main(int argc, char** argv)
   g_vkdev = ncnn::get_gpu_device(selectGPU(gpu_device));
   g_blob_vkallocator = new ncnn::VkBlobAllocator(g_vkdev);
   g_staging_vkallocator = new ncnn::VkStagingAllocator(g_vkdev);
-  engine.neuralnet.opt.use_vulkan_compute = true;
+  engine.neuralnet.opt.use_vulkan_compute = enable_gpu;
   engine.neuralnet.set_vulkan_device(g_vkdev);
 #endif
 
@@ -79,10 +89,12 @@ int main(int argc, char** argv)
   engine.neuralnet.load_param((path+("yolact.param")).c_str()); /**/
   engine.neuralnet.load_model((path+("yolact.bin")).c_str()); /**/
 
-  nhLocal.param("display_output", display_output, true);
-
   int num_threads;
   nhLocal.param("num_threads", num_threads, ncnn::get_cpu_count());
+  nhLocal.param("display_output", display_output, true);
+
+  obj_pub = n.advertise<ros_ncnn::Object>(node_name+"/objects", 50);
+
   image_transport::ImageTransport it(n);
   image_transport::Subscriber video = it.subscribe("/camera/image_raw", 1, boost::bind(&imageCallback, _1, num_threads));
 
