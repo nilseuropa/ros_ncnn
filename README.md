@@ -52,16 +52,26 @@ This is a ROS package for NCNN, a high-performance neural network inference fram
 ![](doc/yolact.png)
 
 ### YOLO
-```xml
-<node name="yolo_node" pkg="ros_ncnn" type="yolo_node" output="screen">
-  <param name="model_file" value="mobilenet_yolo.bin"/> <!-- mobilenetv2_yolov3.bin -->
-  <param name="param_file" value="mobilenet_yolo.param"/> <!-- mobilenetv2_yolov3.param -->
-</node>
-```
-The `assets` repository has multiple YOLO implementations, choose the parameter and mode file from at launch. _( Default is YOLO-3 on MobileNet-2 )_
 ![](doc/yolo.png)
+The `assets` repository has multiple YOLO networks, choose the parameter and model file before launch. _( Default is YOLO-3 on MobileNet-2 )_
+
+**Publisher**
+```yaml
+# Object message
+Header header
+Rectangle boundingbox # Vector2D position and size
+string label
+float32 probability
+```
+**Params**
+* _model_file_ - YOLO network model file
+* _param_file_ - YOLO network parameter file
+* _probability_threshold_ - default 0.5 - above which objects are published
+* _enable_gpu_ - default true - `engine.neuralnet.opt.use_vulkan_compute`
 
 ### RetinaFace ###
+![](doc/retinaface.png)
+
 **Publisher**
 ```yaml
 # FaceObject message
@@ -74,7 +84,6 @@ float32 probability
 * _probability_threshold_ - default 0.5 - above which face objects are published
 * _enable_gpu_ - default true - `engine.neuralnet.opt.use_vulkan_compute`
 
-![](doc/retinaface.png)
 
 ### PoseNet ###
 ![](doc/posenet.png)
@@ -83,7 +92,10 @@ float32 probability
 Don't forget to uncompress `ZF_faster_rcnn_final.bin.zip` in assets directory first. _( but again, R-CNN is the past and that's neither a cat nor a bird right there... that's my best friend )_
 ![](doc/rcnn.png)
 
-## :construction:  To do . . . ##
+## :construction:  To do##
 
 * General model loader node _( with layer to topic mapping through NDS file )_
 * Dynamic reconfiguration for some params _( e.g. probability thresholds )_
+
+## :v: Acknowledgements ##
+_Special thanks to **[Nihui](https://github.com/nihui)** for her wonderful work._

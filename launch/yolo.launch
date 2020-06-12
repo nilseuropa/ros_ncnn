@@ -8,7 +8,8 @@
     <param name="param_file" value="mobilenet_yolo.param"/> <!-- mobilenetv2_yolov3.param -->
     <param name="display_output" value="$(arg display_output)"/>
     <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
-    <param name="gpu_device" value="0"/>
+    <param name="probability_threshold" value="0.7"/>
+    <!-- <param name="gpu_device" value="0"/> -->
     <!-- <param name="num_threads" value="0"/> -->
   </node>
 

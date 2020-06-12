@@ -20,6 +20,7 @@ add_message_files(
   Vector2D.msg
   Rectangle.msg
   FaceObject.msg
+  Object.msg
 )
 
 generate_messages(
