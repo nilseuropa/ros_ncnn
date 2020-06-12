@@ -12,6 +12,19 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   image_geometry
   sensor_msgs
+  message_generation
+)
+
+add_message_files(
+  FILES
+  Vector2D.msg
+  Rectangle.msg
+  FaceObject.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
 )
 
 catkin_package(
@@ -22,6 +35,7 @@ catkin_package(
     image_transport
     image_geometry
     sensor_msgs
+    message_generation
 )
 
 include_directories(

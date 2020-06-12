@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>ros_ncnn</name>
-  <version>0.0.0</version>
-  <description>The ros_ncnn package</description>
+  <version>0.5.0</version>
+  <description>ROS_NCNN Package</description>
 
-  <maintainer email="nils@todo.todo">nils</maintainer>
-  <license>TODO</license>
+  <maintainer email="marton@neorobot.hu">nilseuropa</maintainer>
+  <license>GNU</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 
@@ -15,6 +15,7 @@
   <build_depend>image_transport</build_depend>
   <build_depend>image_geometry</build_depend>
   <build_depend>sensor_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
 
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>roslib</build_export_depend>
@@ -22,7 +23,9 @@
   <build_export_depend>image_transport</build_export_depend>
   <build_export_depend>image_geometry</build_export_depend>
   <build_export_depend>sensor_msgs</build_export_depend>
+  <build_export_depend>message_generation</build_export_depend>
 
+  <exec_depend>message_runtime</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>roslib</exec_depend>
   <exec_depend>cv_bridge</exec_depend>

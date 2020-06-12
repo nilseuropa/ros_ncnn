@@ -62,6 +62,18 @@ The `assets` repository has multiple YOLO implementations, choose the parameter 
 ![](doc/yolo.png)
 
 ### RetinaFace ###
+**Publisher**
+```yaml
+# FaceObject message
+Header header
+Rectangle boundingbox # Vector2D position and size
+Vector2D[5] landmark # 5x 2x float32
+float32 probability
+```
+**Params**
+* _probability_threshold_ - default 0.5 - above which face objects are published
+* _enable_gpu_ - default true - `engine.neuralnet.opt.use_vulkan_compute`
+
 ![](doc/retinaface.png)
 
 ### PoseNet ###
@@ -74,5 +86,4 @@ Don't forget to uncompress `ZF_faster_rcnn_final.bin.zip` in assets directory fi
 ## :construction:  To do . . . ##
 
 * General model loader node _( with layer to topic mapping through NDS file )_
-* Message generation _( e.g. faceObject_msgs )_
 * Dynamic reconfiguration for some params _( e.g. probability thresholds )_
