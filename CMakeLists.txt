@@ -79,6 +79,10 @@ endif()
 configure_file("include/ros_ncnn/ncnn_config.h.in" "ros_ncnn/ncnn_config.h")
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
+# HOPENET
+add_executable(hopenet_node src/hopenet_node.cpp src/ncnn_hopenet.cpp)
+target_link_libraries(hopenet_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+
 # RETINAFACE
 add_executable(retinaface_node src/retinaface_node.cpp src/ncnn_retinaface.cpp)
 target_link_libraries(retinaface_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})

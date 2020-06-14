@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="camera_topic" default="/camera/image_raw"/>
+
+  <node name="retinaface_node" pkg="ros_ncnn" type="retinaface_node">
+    <param name="num_threads" value="1"/>
+    <param name="display_output" value="false"/>
+    <param name="probability_threshold" value="0.7"/>
+    <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
+  </node>
+
+  <node name="hopenet_node" pkg="ros_ncnn" type="hopenet_node" output="screen">
+    <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
+  </node>
+
+</launch>

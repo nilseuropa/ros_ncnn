@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <vector>
+#include <numeric>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -17,7 +18,7 @@ template <class T>
   inline float intersection_area(const T& a, const T& b) {
       cv::Rect_<float> inter = a.rect & b.rect;
       return inter.area();
-  }
+  };
 
 template <class T>
     void qsort_descent_inplace(std::vector<T>& objects, int left, int right) {
@@ -54,7 +55,7 @@ template <class T>
               if (i < right) qsort_descent_inplace(objects, i, right);
           }
       }
-  }
+  };
 
 template <class T>
   static void qsort_descent_inplace(std::vector<T>& objects)
@@ -63,7 +64,7 @@ template <class T>
           return;
 
       qsort_descent_inplace(objects, 0, objects.size() - 1);
-  }
+  };
 
 
 template <class T>
@@ -99,7 +100,18 @@ template <class T>
           if (keep)
               picked.push_back(i);
       }
-  }
+  };
 
+  // template <class T>
+  // void printArray(T* array, uint len)
+  // {
+  //     for (uint i=1; i<len+1; i++)
+  //     {
+  //       std::cout << std::fixed << std::setw( 11 )
+  //       << std::setprecision( 6 ) << array[i-1];
+  //       if (i%6==0) std::cout << "\r\n";
+  //       else std::cout << "\t";
+  //     } std::cout << "\r\n";
+  // };
 
 #endif
