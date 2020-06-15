@@ -95,6 +95,17 @@ float32 probability
 **Params**
 * _probability_threshold_ - default 0.5 - above which face objects are published
 
+### HopeNet ###
+Using RetinaFace as face detector:
+![](doc/hopenet_graph.png)
+
+**Publisher**
+```yaml
+# Euler angles
+float32 roll
+float32 pitch
+float32 yaw
+```
 
 ### PoseNet ###
 ![](doc/posenet.png)
@@ -103,10 +114,10 @@ float32 probability
 Don't forget to uncompress `ZF_faster_rcnn_final.bin.zip` in assets directory first. _( but again, R-CNN is the past and that's neither a cat nor a bird right there... that's my best friend )_
 ![](doc/rcnn.png)
 
-## :construction:  To do##
+## :construction:  To do ##
 
 * General model loader node _( with layer to topic mapping through NDS file )_
 * Dynamic reconfiguration for some params _( e.g. probability thresholds )_
 
-## :v: Acknowledgements ##
+## :v:  Acknowledgements ##
 _Special thanks to **[Nihui](https://github.com/nihui)** for her wonderful work._

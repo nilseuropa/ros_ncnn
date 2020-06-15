@@ -37,8 +37,8 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg, int n_threads)
         const FaceObject& obj = faceobjects[i];
         if (obj.prob > prob_threshold)
         {
-          ROS_INFO("%.5f at %.2f %.2f %.2f x %.2f",
-          obj.prob, obj.rect.x, obj.rect.y, obj.rect.width, obj.rect.height);
+          // ROS_INFO("%.5f at %.2f %.2f %.2f x %.2f",
+          // obj.prob, obj.rect.x, obj.rect.y, obj.rect.width, obj.rect.height);
           faceMsg.header.seq++;
           faceMsg.header.stamp = current_time;
           faceMsg.probability = obj.prob;
