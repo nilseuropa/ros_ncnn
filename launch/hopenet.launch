@@ -5,7 +5,7 @@
   <node name="retinaface_node" pkg="ros_ncnn" type="retinaface_node">
     <param name="num_threads" value="1"/>
     <param name="display_output" value="false"/>
-    <param name="probability_threshold" value="0.7"/>
+    <param name="probability_threshold" value="0.8"/>
     <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
   </node>
 

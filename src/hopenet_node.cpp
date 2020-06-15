@@ -14,12 +14,14 @@
 /////////////////////////////////
 #include "ros_ncnn/ncnn_hopenet.h"
 #include "ros_ncnn/FaceObject.h"
+#include "ros_ncnn/Euler.h"
 ncnnHopeNet engine;
 /////////////////////////////////
 
 HeadPose head;
 cv_bridge::CvImagePtr cv_ptr;
 ros_ncnn::FaceObject face;
+ros::Publisher euler_pub;
 
 void boundingBoxUpdate(const ros_ncnn::FaceObject& msg)
 {
@@ -29,12 +31,14 @@ void boundingBoxUpdate(const ros_ncnn::FaceObject& msg)
   roi.width  = msg.boundingbox.size.x;
   roi.height = msg.boundingbox.size.y;
 
-  engine.detect(cv_ptr->image, roi, head, 8);
-  engine.draw();
+  engine.detect(cv_ptr->image, roi, head);
 
-  ROS_INFO_STREAM("Roll: " << head.roll
-             << "\tPitch: " << head.pitch
-             << "\tYaw: " << head.yaw );
+  ros_ncnn::Euler euler;
+  euler.roll  = head.roll;
+  euler.pitch = head.pitch;
+  euler.yaw   = head.yaw;
+
+  euler_pub.publish(euler);
 }
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
@@ -75,13 +79,10 @@ int main(int argc, char** argv)
   engine.neuralnet.load_param((path+"hopenet.param").c_str());
   engine.neuralnet.load_model((path+"hopenet.bin").c_str());
 
-  int num_threads;
-  nhLocal.param("num_threads", num_threads, ncnn::get_cpu_count());
-
   image_transport::ImageTransport it(n);
   image_transport::Subscriber video = it.subscribe("/camera/image_raw", 1, imageCallback);
   ros::Subscriber facebox_sub = n.subscribe("/retinaface_node/faces", 10, boundingBoxUpdate );
-
+  euler_pub = n.advertise<ros_ncnn::Euler>(node_name+"/euler_angles", 10);
   engine.initialize();
 
 #ifdef GPU_SUPPORT

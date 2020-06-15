@@ -27,7 +27,7 @@ public:
   void   initialize();
   void   softmax(float* z, size_t el);
   double getAngle(float* prediction, size_t len);
-  int    detect(const cv::Mat& bgr, cv::Rect roi, HeadPose& euler_angles, uint8_t n_threads);
+  int    detect(const cv::Mat& bgr, cv::Rect roi, HeadPose& euler_angles);
   void   draw();
 
 };

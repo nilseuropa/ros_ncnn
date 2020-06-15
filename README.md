@@ -95,6 +95,17 @@ float32 probability
 **Params**
 * _probability_threshold_ - default 0.5 - above which face objects are published
 
+### HopeNet ###
+Using RetinaFace as face detector:
+![](doc/hopenet_graph.png)
+
+**Publisher**
+```yaml
+# Euler angles
+float32 roll
+float32 pitch
+float32 yaw
+```
 
 ### PoseNet ###
 ![](doc/posenet.png)

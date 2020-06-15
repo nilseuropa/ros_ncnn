@@ -33,18 +33,30 @@ double ncnnHopeNet::getAngle(float* prediction, size_t len)
   return pitch;
 }
 
-int ncnnHopeNet::detect(const cv::Mat& bgr, cv::Rect roi, HeadPose& head_angles, uint8_t n_threads)
+int ncnnHopeNet::detect(const cv::Mat& bgr, cv::Rect roi, HeadPose& head_angles)
 {
+  float diff = fabs(roi.height-roi.width);
+  if (roi.height > roi.width)
+  {
+    roi.x -= diff/2;
+    roi.width = roi.height;
+  }
+  else if (roi.height < roi.width)
+  {
+    roi.y -= diff/2;
+    roi.height = roi.width;
+  }
+
   cv::Mat faceImg = bgr(roi);
   cv::Mat faceGray;
   cv::cvtColor(faceImg, faceGray, CV_BGR2GRAY);
+
   cv::Size input_geometry = cv::Size(48,48);
   cv::resize(faceGray, faceGrayResized, input_geometry);
 
   ncnn::Mat in = ncnn::Mat::from_pixels(faceGrayResized.data, ncnn::Mat::PIXEL_GRAY, 48, 48);
   ncnn::Extractor ex = neuralnet.create_extractor();
   ex.input("data", in);
-  ex.set_num_threads(n_threads);
 
   ncnn::Mat output;
   ex.extract("hybridsequential0_multitask0_dense0_fwd", output);

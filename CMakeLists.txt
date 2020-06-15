@@ -21,6 +21,7 @@ add_message_files(
   Rectangle.msg
   FaceObject.msg
   Object.msg
+  Euler.msg
 )
 
 generate_messages(
