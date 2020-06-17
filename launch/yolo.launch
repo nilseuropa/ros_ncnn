@@ -4,8 +4,8 @@
   <arg name="camera_topic" default="/camera/image_raw"/>
 
   <node name="yolo_node" pkg="ros_ncnn" type="yolo_node" output="screen">
-    <param name="model_file" value="mobilenet_yolo.bin"/> <!-- mobilenetv2_yolov3.bin -->
-    <param name="param_file" value="mobilenet_yolo.param"/> <!-- mobilenetv2_yolov3.param -->
+    <param name="model_file" value="yolov5.bin"/> <!-- mobilenetv2_yolov3.bin -->
+    <param name="param_file" value="yolov5.param"/> <!-- mobilenetv2_yolov3.param -->
     <param name="display_output" value="$(arg display_output)"/>
     <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
     <param name="probability_threshold" value="0.7"/>

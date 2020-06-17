@@ -64,9 +64,25 @@ float32 probability
 **Params**
 * _probability_threshold_ - default 0.5 - above which objects are published
 
-### YOLO
+### YOLO v2 / v3
 ![](doc/yolo.png)
 The `assets` repository has multiple YOLO networks, choose the parameter and model file before launch. _( Default is YOLO-3 on MobileNet-2 )_
+
+**Publisher**
+```yaml
+# Object message
+Header header
+Rectangle boundingbox # Vector2D position and size
+string label
+float32 probability
+```
+**Params**
+* _model_file_ - YOLO network model file
+* _param_file_ - YOLO network parameter file
+* _probability_threshold_ - default 0.5 - above which objects are published
+
+### YOLO v5
+![](doc/yolov5.png)
 
 **Publisher**
 ```yaml

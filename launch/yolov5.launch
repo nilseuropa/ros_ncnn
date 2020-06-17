@@ -1,0 +1,14 @@
+<launch>
+
+  <arg name="display_output" default="true"/>
+  <arg name="camera_topic" default="/camera/image_raw"/>
+
+  <node name="yolov5_node" pkg="ros_ncnn" type="yolov5_node" output="screen">
+    <param name="model_file" value="yolov5.bin"/>
+    <param name="param_file" value="yolov5.param"/>
+    <param name="display_output" value="$(arg display_output)"/>
+    <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
+    <param name="probability_threshold" value="0.5"/>
+  </node>
+
+</launch>
