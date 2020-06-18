@@ -12,6 +12,7 @@
 #if CV_VERSION_MAJOR >= 4
 #include <opencv2/opencv.hpp>
 #define CV_LOAD_IMAGE_COLOR cv::IMREAD_COLOR
+#define CV_BGR2GRAY cv::COLOR_BGR2GRAY
 #endif  // CV_VERSION_MAJOR >= 4
 
 template <class T>
