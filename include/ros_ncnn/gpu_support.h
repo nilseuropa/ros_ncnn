@@ -50,6 +50,7 @@ int selectGPU(int gpu_device){
       return gpu_device;
     }
   }
+  return -1;
 };
 
 #endif

@@ -12,7 +12,8 @@
 #if CV_VERSION_MAJOR >= 4
 #include <opencv2/opencv.hpp>
 #define CV_LOAD_IMAGE_COLOR cv::IMREAD_COLOR
-#endif  // CV_VERSION_MAJOR >= 4
+#define CV_BGR2GRAY cv::COLOR_BGR2GRAY
+#endif
 
 template <class T>
   inline float intersection_area(const T& a, const T& b) {

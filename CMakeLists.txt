@@ -82,28 +82,35 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # HOPENET
 add_executable(hopenet_node src/hopenet_node.cpp src/ncnn_hopenet.cpp)
+add_dependencies( hopenet_node ros_ncnn_generate_messages_cpp)
 target_link_libraries(hopenet_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
 # RETINAFACE
 add_executable(retinaface_node src/retinaface_node.cpp src/ncnn_retinaface.cpp)
+add_dependencies( retinaface_node ros_ncnn_generate_messages_cpp)
 target_link_libraries(retinaface_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
 # YOLACT
 add_executable(yolact_node src/yolact_node.cpp src/ncnn_yolact.cpp)
+add_dependencies( yolact_node ros_ncnn_generate_messages_cpp)
 target_link_libraries(yolact_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
 # YOLO v2/v3
 add_executable(yolo_node src/yolo_node.cpp src/ncnn_yolo.cpp)
+add_dependencies( yolo_node ros_ncnn_generate_messages_cpp)
 target_link_libraries(yolo_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
 # YOLO v5
 add_executable(yolov5_node src/yolov5_node.cpp src/ncnn_yolov5.cpp)
+add_dependencies( yolov5_node ros_ncnn_generate_messages_cpp)
 target_link_libraries(yolov5_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
 # POSENET
 add_executable(posenet_node src/posenet_node.cpp src/ncnn_posenet.cpp)
+add_dependencies( posenet_node ros_ncnn_generate_messages_cpp)
 target_link_libraries(posenet_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
 # FASTER RCNN
 add_executable(faster_rcnn_node src/faster_rcnn_node.cpp src/ncnn_fast_rcnn.cpp)
+add_dependencies( faster_rcnn_node ros_ncnn_generate_messages_cpp)
 target_link_libraries(faster_rcnn_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
