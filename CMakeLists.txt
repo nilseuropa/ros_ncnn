@@ -90,6 +90,11 @@ add_executable(retinaface_node src/retinaface_node.cpp src/ncnn_retinaface.cpp)
 add_dependencies( retinaface_node ros_ncnn_generate_messages_cpp)
 target_link_libraries(retinaface_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
 
+# ULTRAFACE
+add_executable(ultraface_node src/ultraface_node.cpp src/ncnn_ultraface.cpp)
+add_dependencies( ultraface_node ros_ncnn_generate_messages_cpp)
+target_link_libraries(ultraface_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+
 # YOLACT
 add_executable(yolact_node src/yolact_node.cpp src/ncnn_yolact.cpp)
 add_dependencies( yolact_node ros_ncnn_generate_messages_cpp)
