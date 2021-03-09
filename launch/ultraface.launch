@@ -6,7 +6,7 @@
   <node name="ultraface_node" pkg="ros_ncnn" type="ultraface_node" output="screen">
     <remap from="/camera/image_raw" to="$(arg camera_topic)"/>
     <param name="display_output" value="$(arg display_output)"/>
-    <param name="probability_threshold" value="0.7"/>
+    <param name="probability_threshold" value="0.9"/>
   </node>
 
 </launch>

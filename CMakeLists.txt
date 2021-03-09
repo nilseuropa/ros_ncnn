@@ -80,6 +80,11 @@ endif()
 configure_file("include/ros_ncnn/ncnn_config.h.in" "ros_ncnn/ncnn_config.h")
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
+# PFLD
+add_executable(pfld_node src/pfld_node.cpp src/ncnn_pfld.cpp)
+add_dependencies( pfld_node ros_ncnn_generate_messages_cpp)
+target_link_libraries(pfld_node ${catkin_LIBRARIES} ncnn ${OpenCV_LIBS})
+
 # HOPENET
 add_executable(hopenet_node src/hopenet_node.cpp src/ncnn_hopenet.cpp)
 add_dependencies( hopenet_node ros_ncnn_generate_messages_cpp)
