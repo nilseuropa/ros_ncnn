@@ -21,23 +21,15 @@
 #define hard_nms 1
 #define blending_nms 2 /* mix nms was been proposaled in paper blaze face, aims to minimize the temporal jitter*/
 
-struct FaceObject
-{
-    cv::Rect_<float> rect;
-    cv::Point2f landmark[5];
-    float prob;
-};
-
-// TODO: swap to FaceObject
-
 typedef struct FaceInfo {
     float x1;
     float y1;
     float x2;
     float y2;
+    // float width;
+    // float height;
     float score;
-
-    float *landmarks;
+    // float *landmarks;
 } FaceInfo;
 
 class ncnnUltraFace {

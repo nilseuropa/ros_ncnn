@@ -17,10 +17,7 @@
 ncnnUltraFace engine;
 /////////////////////////////////////
 
-// TODO !!!
-//std::vector<FaceObject> faceobjects;
 std::vector<FaceInfo> face_info;
-
 ros_ncnn::FaceObject faceMsg;
 ros::Publisher face_pub;
 cv_bridge::CvImagePtr cv_ptr;
@@ -38,27 +35,19 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg, int n_threads)
     face_info.clear();
     engine.detect(cv_ptr->image, face_info, n_threads);
 
-
-    // for (size_t i = 0; i < faceobjects.size(); i++)
-    // {
-    //     const FaceObject& obj = faceobjects[i];
-    //     if (obj.prob > prob_threshold)
-    //     {
-    //       // ROS_INFO("%.5f at %.2f %.2f %.2f x %.2f",
-    //       // obj.prob, obj.rect.x, obj.rect.y, obj.rect.width, obj.rect.height);
-    //       faceMsg.header.seq++;
-    //       faceMsg.header.stamp = current_time;
-    //       faceMsg.probability = obj.prob;
-    //       faceMsg.boundingbox.position.x = obj.rect.x;
-    //       faceMsg.boundingbox.position.y = obj.rect.y;
-    //       faceMsg.boundingbox.size.x = obj.rect.width;
-    //       faceMsg.boundingbox.size.y = obj.rect.height;
-    //       for (uint8_t i=0; i<5; i++){
-    //       faceMsg.landmark[i].x = obj.landmark[i].x;
-    //       faceMsg.landmark[i].y = obj.landmark[i].y;}
-    //       face_pub.publish(faceMsg);
-    //     }
-    // }
+    for (size_t i=0; i<face_info.size(); i++){
+      const FaceInfo& info = face_info[i];
+      if (info.score > prob_threshold){
+        faceMsg.header.seq++;
+        faceMsg.header.stamp = current_time;
+        faceMsg.probability = info.score;
+        faceMsg.boundingbox.position.x = info.x1;
+        faceMsg.boundingbox.position.y = info.y1;
+        faceMsg.boundingbox.size.x = info.x2-info.x1;
+        faceMsg.boundingbox.size.y = info.y2-info.y1;
+        face_pub.publish(faceMsg);
+      }
+    }
 
     if (display_output) {
       engine.draw(cv_ptr->image, face_info, (current_time-last_time).toSec());
