@@ -1,21 +1,13 @@
 #ifndef _NODE_GPU_SUPPORT_HEADER_
 #define _NODE_GPU_SUPPORT_HEADER_
 
-class GlobalGpuInstance
-{
-public:
-  GlobalGpuInstance() { ncnn::create_gpu_instance(); }
-  ~GlobalGpuInstance() { ncnn::destroy_gpu_instance(); }
-};
-
-GlobalGpuInstance g_global_gpu_instance;
-
 static ncnn::VulkanDevice* g_vkdev = 0;
 static ncnn::VkAllocator* g_blob_vkallocator = 0;
 static ncnn::VkAllocator* g_staging_vkallocator = 0;
 
+// Check GPU info, override selection with 1st discrete device if the selected gpu_device is non-discrete
 int selectGPU(int gpu_device){
-  // Check GPU info, override selection with 1st discrete device if the selected gpu_device is non-discrete
+  /*
   int gpus = ncnn::get_gpu_count();
   ncnn::GpuInfo gpu_info;
   int first_discrete = -1;
@@ -51,6 +43,12 @@ int selectGPU(int gpu_device){
     }
   }
   return -1;
+  */
+
+  // TODO: 
+  // ncnn::GpuInfo::GpuInfo(const ncnn::GpuInfo&)’ became private within this context . . .
+
+  return gpu_device;
 };
 
 #endif
